@@ -3,5 +3,6 @@ if (process.env.NODE_ENV === 'production') {
   module.exports = require('./prod');
 } else {
   // we are in development - return the dev keys!!!
-  module.exports = {MONGODB_URI: "mongodb://localhost/mathlibDB"};
+  // module.exports = {MONGODB_URI: "mongodb://localhost/mathlibDB"};
+  module.exports = {MONGODB_URI: process.env.MONGODB_URI};
 }
