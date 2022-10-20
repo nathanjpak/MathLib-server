@@ -4,6 +4,7 @@ require("dotenv").config();
 const bodyParser = require("body-parser");
 const connectDb = require("./config/db");
 
+const mainRoutes = require("./routes/main");
 const userRoutes = require("./routes/users");
 
 // const User = require("./models/User");
@@ -31,6 +32,7 @@ app.use(
 
 app.use(bodyParser.json());
 
+app.use("/", mainRoutes);
 app.use("/users", userRoutes);
 
 // const testUser = new User({ username: "testUser", password: "bananas", email: "testmail@testsite.com" });
