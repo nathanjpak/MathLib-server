@@ -38,8 +38,9 @@ app.use(bodyParser.json());
 // sessions
 const cookieConfig = {
   maxAge: 12 * 60 * 60 * 1000, // 12 hours
+  sameSite: "none"
 }
-if (process.env.NODE_ENV === "production") cookieConfig.sameSite = "none";
+// if (process.env.NODE_ENV === "production") cookieConfig.sameSite = "none";
 
 app.use(
   session({
