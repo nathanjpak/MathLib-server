@@ -40,14 +40,20 @@ const cookieConfig = {
   maxAge: 12 * 60 * 60 * 1000, // 12 hours
   sameSite: "none",
   secure: true,
+  httpOnly: true,
 }
-// if (process.env.NODE_ENV === "production") cookieConfig.sameSite = "none";
+// if (process.env.NODE_ENV === "production") {
+//   cookieConfig.sameSite = "none";
+//   cookieConfig.secure = true;
+//   cookieConfig.httpOnly = true;
+// };
 
 app.use(
   session({
     secret: process.env.TOKEN_SECRET,
     resave: false,
     saveUninitialized: false,
+    proxy: true,
     cookie: cookieConfig,
     name: "SessionCookie",
     store: MongoStore.create({
