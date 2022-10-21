@@ -36,14 +36,17 @@ app.use(
 app.use(bodyParser.json());
 
 // sessions
+const cookieConfig = {
+  maxAge: 12 * 60 * 60 * 1000, // 12 hours
+}
+if (process.env.NODE_ENV === "production") cookieConfig.sameSite = "none";
+
 app.use(
   session({
     secret: process.env.TOKEN_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      maxAge: 12 * 60 * 60 * 1000 // 12 hours
-    },
+    cookie: cookieConfig,
     store: MongoStore.create({
       mongoUrl: keys.MONGODB_URI,
     }),
