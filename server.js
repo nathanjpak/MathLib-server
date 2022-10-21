@@ -41,6 +41,9 @@ app.use(
     secret: process.env.TOKEN_SECRET,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      maxAge: 12 * 60 * 60 * 1000 // 12 hours
+    },
     store: MongoStore.create({
       mongoUrl: keys.MONGODB_URI,
     }),
