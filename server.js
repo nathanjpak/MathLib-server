@@ -38,7 +38,8 @@ app.use(bodyParser.json());
 // sessions
 const cookieConfig = {
   maxAge: 12 * 60 * 60 * 1000, // 12 hours
-  sameSite: "none"
+  sameSite: "none",
+  secure: true,
 }
 // if (process.env.NODE_ENV === "production") cookieConfig.sameSite = "none";
 
@@ -48,6 +49,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: cookieConfig,
+    name: "SessionCookie",
     store: MongoStore.create({
       mongoUrl: keys.MONGODB_URI,
     }),
