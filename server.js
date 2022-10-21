@@ -22,6 +22,7 @@ const app = express().use("*", cors({
   credentials: true,
   preflightContinue: true,
 }));
+app.options("*", function(req, res) { res.sendStatus(200) });
 const port = 5000;
 
 connectDb();
