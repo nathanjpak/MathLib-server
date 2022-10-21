@@ -1,28 +1,30 @@
 const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
+const cors = require("cors");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const bodyParser = require("body-parser");
 const connectDb = require("./config/db");
 
+const passport = require("./authentication/passport");
+
 const mainRoutes = require("./routes/main");
+const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
 
-// const User = require("./models/User");
+const User = require("./models/User");
 
-const app = express();
+const keys = require("./config/keys");
+
+const app = express().use("*", cors({
+  origin: ["http://localhost:3000", "https://mathlib.onrender.com"],
+  credentials: true,
+  preflightContinue: true,
+}));
 const port = 5000;
 
 connectDb();
-
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  next();
-});
 
 app.use(
   bodyParser.urlencoded({
@@ -32,7 +34,24 @@ app.use(
 
 app.use(bodyParser.json());
 
+// sessions
+app.use(
+  session({
+    secret: process.env.TOKEN_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: keys.MONGODB_URI,
+    }),
+  })
+)
+
+// authentication stuff
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use("/", mainRoutes);
+app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 
 // const testUser = new User({ username: "testUser", password: "bananas", email: "testmail@testsite.com" });
