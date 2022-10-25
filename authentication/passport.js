@@ -14,11 +14,11 @@ passport.deserializeUser((id, done) => {
   User.findOne(
     { _id: id },
     "-password",
-    // "username",
-    (err, user) => {
-      done(null, user)
-    }
   )
+    .populate("problemSets")
+    .exec((err, user) => {
+      done(err, user);
+    })
 })
 
 passport.use(new LocalStrategy(

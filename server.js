@@ -12,6 +12,7 @@ const passport = require("./authentication/passport");
 const mainRoutes = require("./routes/main");
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
+const setRoutes = require("./routes/problemSets");
 
 const User = require("./models/User");
 
@@ -69,6 +70,7 @@ app.use(passport.session());
 app.use("/", mainRoutes);
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
+app.use("/sets", setRoutes);
 
 // const testUser = new User({ username: "testUser", password: "bananas", email: "testmail@testsite.com" });
 // testUser.save();
