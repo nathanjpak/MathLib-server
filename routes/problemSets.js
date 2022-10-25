@@ -33,7 +33,7 @@ router
         .populate("problemSets")
         .exec((err, user) => {
           if (err) return next(err);
-          res.status(200).send(user).end();
+          res.status(200).send({ user: user, problemSet: set }).end();
         })
       });
       // .then(() => {
