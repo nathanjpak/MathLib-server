@@ -39,13 +39,40 @@ router
       })
   })
 
-  // .delete("/:id", async (req, res, next) => {
-  //   const setId = req.params.id;
-  //   ProblemSet.findByIdAndDelete(setId)
-  //     .exec((err) => {
-  //       if (err) return next(err);
-  //       res.status(200).send("Set deleted!").end();
-  //     })
-  // })
+  // PUT and update a problem set
+  .put("/:id", authenticateRequest, async (req, res, next) => {
+    const setId = req.params.id;
+    const updateQuery = {};
+    if (req.body.name) updateQuery.name = req.body.name;
+    if (req.body.problems) updateQuery.problems = req.body.problems;
+    ProblemSet.findByIdAndUpdate(
+      setId,
+      updateQuery,
+      { new: true }
+    )
+      .exec((err, set) => {
+        if (err) return next(err);
+        let updatedUser = null;
+        if (req.body.name) {
+          User.findById(req.body.userId)
+            .exec((err, user) => {
+              if (err) return next(err);
+              res.status(200).send({ updatedSet: set, updatedUser: user });
+            })
+        } else {
+          res.status(200).send({ updatedSet: set });
+        }
+      });
+  })
+
+  // DELETE a problem set
+  .delete("/:id", async (req, res, next) => {
+    const setId = req.params.id;
+    ProblemSet.findByIdAndDelete(setId)
+      .exec((err) => {
+        if (err) return next(err);
+        res.status(204).send();
+      });
+  })
 
 module.exports = router;
