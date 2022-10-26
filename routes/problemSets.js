@@ -10,11 +10,6 @@ router
   // POST new problem set
   .post("/", authenticateRequest, async (req, res, next) => {
     const { name, userId, problems } = req.body;
-    // console.dir({
-    //   name: name,
-    //   owner: userId,
-    //   problems: problems,
-    // })
     const newProblemSet = await new ProblemSet({
       name: name,
       owner: userId,
@@ -25,10 +20,6 @@ router
         { _id: userId },
         { $push: { problemSets: set._id } },
         { new: true },
-        // function (err, user) {
-        //   if (err) return next(err);
-        //   res.status(200).send(user).end();
-        // }
       )
         .populate("problemSets")
         .exec((err, user) => {
@@ -36,18 +27,25 @@ router
           res.status(200).send({ user: user, problemSet: set }).end();
         })
       });
-      // .then(() => {
-      //   // if (err) return next(err);
-      //   User.findByIdAndUpdate(userId, 
-      //     { $push: { problemSets: newProblemSet._id }},
-      //     { new: true },
-      //     function (err, user) {
-      //       console.log(user);
-      //       if (err) return next(err);
-      //       res.status(200).send(user).end();
-      //     }
-      //   )
-      // })
   })
+
+  // GET a problem set
+  .get("/:id", async (req, res, next) => {
+    const setId = req.params.id;
+    ProblemSet.findById(setId)
+      .exec((err, set) => {
+        if (err) return next(err);
+        res.status(200).send(set).end();
+      })
+  })
+
+  // .delete("/:id", async (req, res, next) => {
+  //   const setId = req.params.id;
+  //   ProblemSet.findByIdAndDelete(setId)
+  //     .exec((err) => {
+  //       if (err) return next(err);
+  //       res.status(200).send("Set deleted!").end();
+  //     })
+  // })
 
 module.exports = router;
