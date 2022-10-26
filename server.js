@@ -19,7 +19,7 @@ const User = require("./models/User");
 const keys = require("./config/keys");
 
 const app = express().use("*", cors({
-  origin: ["http://localhost:3000", "https://mathlib.onrender.com"],
+  origin: ["http://localhost:3000", "https://mathlib.onrender.com", "https://www.mathlibz.com"],
   credentials: true,
   preflightContinue: true,
 }));
