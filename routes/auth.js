@@ -28,7 +28,7 @@ router
 
   .post("/logout", (req, res) => {
     if (req.user) {
-      console.log(req.user);
+      // console.log(req.user);
       req.logout(function(err) {
         if (err) { return next(err) }
         res.send("Logged out!");

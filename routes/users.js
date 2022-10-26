@@ -24,7 +24,7 @@ router
   // POST sign up
   .post("/new", (req, res, next) => {
     const {username, email, password} = req.body;
-    console.log(username, email, password);
+    // console.log(username, email, password);
     // validation
     User.findOne({ $or: [{ username: username }, { email: email }] })
       .exec((err, user) => {
