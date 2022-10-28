@@ -45,22 +45,17 @@ router
     const updateQuery = {};
     if (req.body.name) updateQuery.name = req.body.name;
     if (req.body.problems) updateQuery.problems = req.body.problems;
-    ProblemSet.findByIdAndUpdate(
-      setId,
+    ProblemSet.findOneAndUpdate(
+      { _id: setId },
       updateQuery,
       { new: true }
     )
       .exec((err, set) => {
         if (err) return next(err);
-        let updatedUser = null;
         if (req.body.name) {
-          User.findById(req.body.userId)
-            .exec((err, user) => {
-              if (err) return next(err);
-              res.status(200).send({ updatedSet: set, updatedUser: user });
-            })
+          res.status(200).send({ updatedSet: set, updatedUser: true });
         } else {
-          res.status(200).send({ updatedSet: set });
+          res.status(200).send({ updatedSet: set, updatedUser: false });
         }
       });
   })
